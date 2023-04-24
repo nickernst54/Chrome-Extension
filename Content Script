@@ -1,0 +1,17 @@
+// Find the invoice links on the page
+const invoiceLinks = document.querySelectorAll('a[href*="/invoices/"]');
+
+// Loop through the invoice links and extract the invoices
+invoiceLinks.forEach((link) => {
+  const url = link.href;
+  const fileName = url.substring(url.lastIndexOf('/')+1);
+  const fileExtension = fileName.split('.').pop();
+
+  // Only extract PDF invoices
+  if (fileExtension.toLowerCase() === 'pdf') {
+    // Send a message to the background script with the URL of the PDF
+    chrome.runtime.sendMessage({type: 'invoice', url: url}, (response) => {
+      console.log(response);
+    });
+  }
+});
