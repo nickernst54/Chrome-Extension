@@ -2,7 +2,6 @@
   "manifest_version": 2,
   "name": "Invoice Extractor",
   "version": "1.0",
-
   "description": "Extract invoices from subscription services.",
 
   "icons": {
@@ -13,10 +12,19 @@
 
   "permissions": [
     "activeTab",
-    "https://*/*"
+    "https://*/*",
+    "automation"
   ],
 
   "content_scripts": [
+    {
+      "matches": [
+        "https://example.com/login"
+      ],
+      "js": [
+        "login.js"
+      ]
+    },
     {
       "matches": [
         "https://example.com/*",
@@ -24,7 +32,9 @@
         "https://anotherexample.com/*",
         "https://*.anotherexample.com/*"
       ],
-      "js": ["content.js"]
+      "js": [
+        "content.js"
+      ]
     }
   ],
 
