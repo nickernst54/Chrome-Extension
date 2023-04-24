@@ -1,17 +1,16 @@
-// Find the invoice links on the page
-const invoiceLinks = document.querySelectorAll('a[href*="/invoices/"]');
+// Find the login form fields on the page
+const emailInput = document.querySelector('input[type="email"]');
+const passwordInput = document.querySelector('input[type="password"]');
 
-// Loop through the invoice links and extract the invoices
-invoiceLinks.forEach((link) => {
-  const url = link.href;
-  const fileName = url.substring(url.lastIndexOf('/')+1);
-  const fileExtension = fileName.split('.').pop();
-
-  // Only extract PDF invoices
-  if (fileExtension.toLowerCase() === 'pdf') {
-    // Send a message to the background script with the URL of the PDF
-    chrome.runtime.sendMessage({type: 'invoice', url: url}, (response) => {
-      console.log(response);
+// Use the automation API to fill in the email and password fields
+chrome.automation.focus(emailInput, () => {
+  chrome.automation.sendKeys(emailInput, 'your-email@example.com', () => {
+    chrome.automation.focus(passwordInput, () => {
+      chrome.automation.sendKeys(passwordInput, 'your-password', () => {
+        // Submit the form
+        emailInput.form.submit();
+      });
     });
-  }
+  });
 });
+
